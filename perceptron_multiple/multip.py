@@ -17,26 +17,11 @@ class Perceptron:
         print(f'\nsumatoria! entrada: {entrada}  lenght {len(entrada)}')
         # el cero siempre para el bias!
         z = 0 # inicializo en 0
-        x0 = 1 # bias siempre igual
-        # creo variables segun mi la len() de mi entrada
-
-        for i in range(len(entrada)+1):
-            print(entrada)
-            if i == 0:
-               w0 = self.pesos[0] 
-            else: 
-
-
-                print(i)
-                vars()['x%s' % i] = entrada[i]
-                vars()['w%s' % i] = self.pesos[i]
-    
-        # realizo sumatoria 
 
         for i in range(len(entrada)):
-            z += vars()['x%s' % i] * vars()['w%s' % i]
-        print(f"resultado sumatoria {sigmoid(z)}")
+            z += entrada[i] * self.pesos[i]
         self.resultado = sigmoid(z)
+        print(self.resultado)
 
 
 class RedNeuronal:
@@ -56,6 +41,7 @@ class RedNeuronal:
         print(f"filas -> muestras : {data.shape[0]}")
         # data.shape - 1 = lo que "entra en las primeras neuronas" y ultima fila el y !! lo q deberia obtener 
         print(f"columnas -> variables y ultima fila resultado ... {data.shape[1]}")
+        bias = 1
         for dato in data:
             print('\n\n\noperamos con el dato ', dato, '\n\n')
             for capa in self.red: 
@@ -64,14 +50,15 @@ class RedNeuronal:
                         #PRIMERA CAPA
                         # entran mis data.shape[:-1]  --> 1 x peso!  me queda un peso. para el bias :)
                         print(f"\ncapa {neurona.capa} neurona {neurona.neurona} pesos {neurona.pesos} ")
-                        neurona.sumatoria(dato[:-1])
+                        entrada = [bias] + list(dato[:-1])
+                        neurona.sumatoria(entrada)
                     else: 
                         # CAPAS INTERMEDIAS
                         resultados_anteriores = [i.resultado for i in self.red[neurona.capa - 1]]
                         print(f"capa {neurona.capa} neurona {neurona.neurona} pesos {neurona.pesos} ")
                         print(f'resultados capa anterior {resultados_anteriores}')
-                        
-                        neurona.sumatoria(resultados_anteriores)
+                        entrada = [bias] + resultados_anteriores
+                        neurona.sumatoria(entrada)
 
 
 if __name__ == '__main__':
