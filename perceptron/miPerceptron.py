@@ -1,4 +1,5 @@
 import math
+from turtle import color
 import matplotlib.pyplot as plt
 
 def sigmoid(x):
@@ -19,12 +20,13 @@ def aprender(compuerta):
     w2=-0.2
     epochs = 0
     x = 0
+    colors = ['green', 'red', 'black', 'yellow']
     while True:
-        for i in compuerta:
+        for indice, i in enumerate(compuerta):
             # aca no se tienen q pisar las neuronas no? 
             ps = perceptron(i[0][0],i[0][1], 1, w0, w1, w2)
             error = abs(i[1] - ps)
-            plt.plot(x,error,"o",color="red")
+            plt.plot(x,error,"o",color=colors[indice])
             x += 1
             #print('error', error)
             deltaw0 = error * lr * 1
