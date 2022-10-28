@@ -21,7 +21,7 @@ class Perceptron:
         for i in range(len(entrada)):
             z += entrada[i] * self.pesos[i]
         self.resultado = sigmoid(z)
-        print(self.resultado)
+        print('self.resultado', self.resultado)
 
 
 class RedNeuronal:
@@ -62,6 +62,7 @@ class RedNeuronal:
 
 
 if __name__ == '__main__':
+
     xor = np.array([[0, 0, 0]])
     red_neuronal = RedNeuronal([[2, [0.9, 0.7, 0.5], [0.3, -0.9, -1]], [3, [0.8, 0.35, 0.1], [-0.23, -0.79, 0.56], [0.6, -0.6, 0.22]], [1, [-0.22, -0.55, 0.31, -0.32]]])
     red_neuronal.alimentarRed(xor)
