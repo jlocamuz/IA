@@ -13,7 +13,7 @@ def perceptron(x1, x2, bias, w0, w1, w2):
     
 def aprender(compuerta):
 
-    
+
     lr = 0.1
     w0 = 0.9
     w1=0.66
