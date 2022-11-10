@@ -2,7 +2,10 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 
-
+plot1 = plt.subplot2grid((3,3),(0,0),colspan = 2)
+plot2 = plt.subplot2grid((3,3),(1,0), colspan = 2)
+x1 = 0
+x2 = 0
 def sigmoid(x):
 	sig = 1 / (1 + math.exp(-x))
 	return sig
@@ -16,15 +19,20 @@ class Perceptron:
         self.resultado =  resultado
 
     def sumatoria(self, entrada):
+        global x2
         #print(f'\nsumatoria! entrada: {entrada}  lenght {len(entrada)}')
         # el cero siempre para el bias!
         z = 0 # inicializo en 0
     
         for i in range(len(entrada)):
+            plot2.plot(x2,self.pesos[i],'.',color='black')
             z += entrada[i] * self.pesos[i]
         #print("z", z)
         #print("sigmoide ", sigmoid(z))
         self.resultado = sigmoid(z)
+
+        x2 += 0.1
+
 
     #aca ta el errro
     def actualizar_pesos(self, lr, entrada):
@@ -48,12 +56,11 @@ class RedNeuronal:
             (self.red).append(list_capa)
     
     def alimentarRed(self, data):
-
         lr = 0.5
         epochs = 0
         bias = 1
         colors = ['green', 'red', 'black', 'yellow']
-        x = 0
+        global x1
 
         print(len(self.estructura))
         while epochs < 1000:
@@ -78,8 +85,10 @@ class RedNeuronal:
                         neurona.error = dato[-1] - neurona.resultado
                         #print('error', neurona.error)
                         if indiceCapa == (len(self.estructura) - 1):
-                            plt.plot(x,abs(neurona.error),"o",color=colors[indice])
-                        x += 0.1
+                            plot1.plot(x1,abs(neurona.error),"o",color=colors[indice])
+                        #for i in neurona.pesos:
+                         #   plot2.plot(x,i,".",color='black')
+                        x1 += 0.1
                         neurona.actualizar_pesos(lr, entrada)
             #print(f'epoch #n {epochs}')
             epochs += 1
@@ -90,6 +99,7 @@ if __name__ == '__main__':
         red_neuronal = RedNeuronal([[2, [0.9, 0.7, 0.5], [0.3, -0.9, -1]], [3, [0.8, 0.35, 0.1], [-0.23, -0.79, 0.56], [0.6, -0.6, 0.22]], [1, [-0.22, -0.55, 0.31, -0.32]]])
 
         red_neuronal.alimentarRed(xor)
+        plt.tight_layout()
         plt.show()
     except IndexError:
         print("Has propocionado mal la estructura de la red neuronal!")
