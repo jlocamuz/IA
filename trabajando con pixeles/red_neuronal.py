@@ -65,7 +65,7 @@ class RedNeuronal:
 		epochs = 0
 		bias = 1
 		x1 = 0
-		while errorA > 0.001 and errorB > 0.001:
+		while errorA > 0.005 and errorB > 0.005 and epochs < 40:
 			print(epochs)
 			for indice, dato in enumerate(data):
 				#print(f'indice {indice}')  IMPORTANTE
@@ -102,7 +102,7 @@ class RedNeuronal:
 							# for i in neurona.pesos:
 							#   plot2.plot(x,i,".",color='black')
 							x1 += 0.1
-							neurona.actualizar_pesos(lr, entrada)
+							#neurona.actualizar_pesos(lr, entrada)
 				except OverflowError:
 					print('pass')
 			# print(f'epoch #n {epochs}')

@@ -1,25 +1,35 @@
+import matplotlib.pyplot as plt
 import numpy as np
-from keras.models import Sequential
-from keras.layers.core import Dense
+import tensorflow as tf
+from probando2 import *
 
-# cargamos las 4 combinaciones de las compuertas XOR
-training_data = np.array([[0,0],[0,1],[1,0],[1,1]], "float32")
+personas = manipular_imagenes('./imagenes', './modificadas/')
 
-# y estos son los resultados que se obtienen, en el mismo orden
-target_data = np.array([[0],[1],[1],[0]], "float32")
+# y estos son los resultados que se obtienen, en el mismo orden 
+# 0 - A - CLAUDIA // 1 - B - ROSARIO
+target_data = np.array([[0],[1],[0],[1],[0],[1],[0],[1],[0],[1]], "float32")
 
-model = Sequential()
-model.add(Dense(16, input_dim=2, activation='relu'))
-model.add(Dense(1, activation='sigmoid'))
+# len(personas) = 10
+# len(personas[0]) = 7681  
+for indice, i in enumerate(personas):
+    personas[indice] = i[:-1] 
+# len(personas[0]) = 7680
 
-model.compile(loss='mean_squared_error',
-              optimizer='adam',
-              metrics=['binary_accuracy'])
+# cargamos los 7860 valores de cada pixel
+training_data = np.array(personas, "float32")
 
-model.fit(training_data, target_data, epochs=1000)
+capa1 = tf.keras.layers.Dense(units=100, input_shape=[7680])  # 100 neuronas con una entrada x pixel de imagen 7680
+capa2 = tf.keras.layers.Dense(units=1, input_shape=[100]) # 1 neurona con 100 entradas , capa anterior
 
-# evaluamos el modelo
-scores = model.evaluate(training_data, target_data)
+modelo = tf.keras.Sequential()
+modelo.add(capa1)
+modelo.add(capa2)
 
-print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
-print (model.predict(training_data).round())
+modelo.compile(
+    optimizer=tf.keras.optimizers.Adam(0.1),
+    loss='mean_squared_error'
+)
+
+historial = modelo.fit(training_data, target_data, epochs=50, verbose=False)
+plt.plot(historial.history['loss'])
+plt.show()
